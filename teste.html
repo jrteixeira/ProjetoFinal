@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Tabela dinamica</title>
+    <link rel="stylesheet" type="text/css" href="https://semantic-ui.com/dist/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=
+    " crossorigin="anonymous"></script>
+    <script src="https://semantic-ui.com/dist/semantic.min.js"></script>
+
+    <script>
+        var idDinamico = 1;
+        var index = null;
+        function remover(e) {
+            e.parentElement.remove();
+        }
+
+        function alterar(e) {
+            document.querySelector("#inputNome").value = e.parentElement.childNodes[1].innerText;
+            document.querySelector("#inputEmail").value = e.parentElement.childNodes[2].innerText;
+            index = e;
+        }
+
+        function adicionar() {
+
+            if (document.querySelector("#inputNome").value != "" && document.querySelector("#inputEmail").value != "" && index == null) {
+                var tr = document.createElement("tr");
+                var tdId = document.createElement("td");
+                var tdNome = document.createElement("td");
+                var tdEmail = document.createElement("td");
+                var tdBotaoAdd = document.createElement("td");
+
+                var botaoRemover = document.createElement("button");
+                var botaoAlterar = document.createElement("button");
+
+                tdBotaoAdd.append(botaoRemover);
+                tdBotaoAdd.append(botaoAlterar);
+
+                botaoAlterar.innerText = "Alterar";
+                botaoAlterar.classList.add('ui', 'yellow', 'button');
+                botaoAlterar.addEventListener("click", function() {
+                    alterar(tdBotaoAdd)
+                });
+                botaoRemover.innerText = "remover";
+                botaoRemover.classList.add('ui', 'red', 'button');
+                botaoRemover.addEventListener("click", function() {
+                    remover(tdBotaoAdd)
+                });
+
+
+                tdId.innerText = idDinamico++;
+                tdNome.innerText = document.querySelector("#inputNome").value;
+                tdEmail.innerText = document.querySelector("#inputEmail").value;
+
+                tr.append(tdId);
+                tr.append(tdNome);
+                tr.append(tdEmail);
+                tr.append(tdBotaoAdd);
+
+
+                document.querySelector("#tabela_dinamica").append(tr);
+            } 
+            else if(index != null){
+             index.parentElement.childNodes[1].innerText = document.querySelector("#inputNome").value;
+             index.parentElement.childNodes[2].innerText = document.querySelector("#inputEmail").value;
+             index = null;
+            }
+            else if (document.querySelector("#inputNome").value == "" && document.querySelector("#inputEmail").value != "") {
+                alert("Digite um Nome");
+            } else if (document.querySelector("#inputNome").value != "" && document.querySelector("#inputEmail").value == "") {
+                alert("Digite um Email");
+            } else {
+                alert("Preencha seus dados");
+            }
+        }
+    </script>
+
+</head>
+
+<body style="background-color: #aec3c5;">
+
+    <div style="margin: 20px;">
+        <table class="ui selectable inverted table" style="width: auto; box-shadow: 10px 10px 20px 5px rgba(0,0,0,0.75);">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>Id</th>
+                    <th>Usuario</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabela_dinamica">
+            </tbody>
+        </table>
+
+
+        <br><br>
+
+        <form class="ui form">
+
+            <div class="field">
+                <div class="ui grid">
+                    <div class="sixteen wide eight wide tablet four wide computer column">
+                        <label style="font-size: large; font-weight: bold;">Nome</label>
+                        <input style="color: #fbbd08; background-color: #333333; box-shadow: 10px 10px 20px 5px rgba(0,0,0,0.75);" type="text" id="inputNome" name="first-name" placeholder="Nome">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui grid">
+                    <div class="sixteen wide eight wide tablet four wide computer column">
+                        <label style="font-size: large; font-weight: bold;">Email</label>
+                        <input style="color: #fbbd08; background-color: #333333; box-shadow: 10px 10px 20px 5px rgba(0,0,0,0.75);" type="text" id="inputEmail" name="last-name" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <div style="margin-top: 10px;"></div>
+        <button style="box-shadow: 10px 10px 20px 5px rgba(0,0,0,0.75); margin-top: 16px; margin-left: 222px;" class="positive ui button" onclick="adicionar(index)">Salvar</button>
+    </div>
+</body>
